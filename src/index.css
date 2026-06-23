@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Honor reduced-motion at the platform level: no smooth-scroll jumps. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-void-bg font-sans text-white antialiased;
+    /* Fallback oxblood field so the page is never flat black before/without WebGL. */
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Display face: expanded, architectural grotesque. */
+  .font-display {
+    font-variation-settings: 'wght' 800, 'wdth' 118;
+  }
+
+  /* Visible, on-brand focus ring for keyboard users. */
+  :focus-visible {
+    outline: 2px solid theme('colors.void.oxblood');
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: theme('colors.void.oxblood');
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  /* The fallback gradient the shader canvas sits on top of. Mirrors the
+     shader's oxblood-into-near-black mood so a WebGL failure degrades gracefully. */
+  .void-fallback {
+    background:
+      radial-gradient(
+        120% 90% at 28% 18%,
+        rgba(122, 20, 32, 0.55) 0%,
+        rgba(92, 16, 24, 0.32) 26%,
+        rgba(10, 5, 6, 0.9) 62%,
+        #050203 100%
+      ),
+      #0a0506;
+  }
+
+  /* Per-letter wrapper for the hero wordmark resolve. */
+  .hero-letter {
+    display: inline-block;
+    will-change: transform, filter, opacity;
+  }
+}
