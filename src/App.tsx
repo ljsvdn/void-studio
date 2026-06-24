@@ -1,22 +1,35 @@
+import { lazy, Suspense } from 'react';
 import Nav from './components/Nav';
 import Hero from './components/Hero';
 import Work from './components/Work';
-import About from './components/About';
-import Contact from './components/Contact';
-import { useReducedMotion } from './hooks/useReducedMotion';
+import Process from './components/Process';
+import Footer from './components/Footer';
+import { ShaderProvider } from './shaders/ShaderStore';
+
+// DEV-only shader tuner; the dynamic import is dead-code-eliminated in prod
+// (import.meta.env.DEV is statically false there).
+const ShaderTuner = import.meta.env.DEV ? lazy(() => import('./shaders/ShaderTuner')) : null;
 
 export default function App() {
-  const reducedMotion = useReducedMotion();
-
   return (
-    <>
+    <ShaderProvider>
+      {/* analog texture overlays */}
+      <div className="grain" aria-hidden="true" />
+      <div className="scan" aria-hidden="true" />
+
       <Nav />
       <main>
-        <Hero reducedMotion={reducedMotion} />
-        <Work reducedMotion={reducedMotion} />
-        <About reducedMotion={reducedMotion} />
-        <Contact reducedMotion={reducedMotion} />
+        <Hero />
+        <Work />
+        <Process />
       </main>
-    </>
+      <Footer />
+
+      {ShaderTuner && (
+        <Suspense fallback={null}>
+          <ShaderTuner />
+        </Suspense>
+      )}
+    </ShaderProvider>
   );
 }

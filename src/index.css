@@ -2,68 +2,570 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    color-scheme: dark;
-  }
+/* ============================================================
+   VØID — Studio. Ported from the design system, with:
+   - orange accent (#c75a32) removed -> monochrome chrome; all
+     color now comes from the shaders.
+   - thicker nav foil border.
+   - per-project shader backgrounds in Selected Work (moon no
+     longer clipped — it bleeds out of its box).
+   ============================================================ */
 
-  html {
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-  }
+:root {
+  --ink: #f1e8e1;
+  --ink-dim: #968578;
+  /* one unified darkest bg across body + every shader colorBack, so sections
+     blend with no seam */
+  --bg: #040302;
+  --line: rgba(241, 232, 225, 0.13);
+  /* Monochrome accent — no orange. Color lives in the shaders. */
+  --accent: #f1e8e1;
 
-  /* Honor reduced-motion at the platform level: no smooth-scroll jumps. */
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-  }
-
-  body {
-    @apply bg-void-bg font-sans text-white antialiased;
-    /* Fallback oxblood field so the page is never flat black before/without WebGL. */
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    overflow-x: hidden;
-  }
-
-  /* Display face: expanded, architectural grotesque. */
-  .font-display {
-    font-variation-settings: 'wght' 800, 'wdth' 118;
-  }
-
-  /* Visible, on-brand focus ring for keyboard users. */
-  :focus-visible {
-    outline: 2px solid theme('colors.void.oxblood');
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
-
-  ::selection {
-    background: theme('colors.void.oxblood');
-    color: #fff;
-  }
+  --disp: 'Archivo', sans-serif;
+  --logo: 'Instrument Serif', serif;
+  --body: 'Space Grotesk', sans-serif;
 }
 
-@layer utilities {
-  /* The fallback gradient the shader canvas sits on top of. Mirrors the
-     shader's oxblood-into-near-black mood so a WebGL failure degrades gracefully. */
-  .void-fallback {
-    background:
-      radial-gradient(
-        120% 90% at 28% 18%,
-        rgba(122, 20, 32, 0.55) 0%,
-        rgba(92, 16, 24, 0.32) 26%,
-        rgba(10, 5, 6, 0.9) 62%,
-        #050203 100%
-      ),
-      #0a0506;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::selection {
+  background: var(--ink);
+  color: #070505;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
 
-  /* Per-letter wrapper for the hero wordmark resolve. */
-  .hero-letter {
-    display: inline-block;
-    will-change: transform, filter, opacity;
-  }
+.disp {
+  font-family: var(--disp);
+  font-weight: 900;
+  font-variation-settings: 'wdth' 125;
+  letter-spacing: -0.02em;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+.void {
+  font-family: var(--logo);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+}
+
+/* ── film grain + scanline overlays ── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.42;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainshift 0.6s steps(2) infinite;
+}
+@keyframes grainshift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-4px, 3px); }
+  100% { transform: translate(3px, -2px); }
+}
+.scan {
+  position: fixed;
+  inset: 0;
+  z-index: 91;
+  pointer-events: none;
+  opacity: 0.4;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.34) 3px,
+    rgba(0, 0, 0, 0) 4px
+  );
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+}
+
+/* ── nav · plain bordered pill, serif logo ── */
+nav {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: min(1180px, calc(100% - 36px));
+}
+.navshell {
+  position: relative;
+  border-radius: 100px;
+  box-shadow: 0 14px 50px rgba(0, 0, 0, 0.55);
+}
+.navin {
+  position: relative;
+  z-index: 2;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: rgba(9, 6, 5, 0.92);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 14px 13px 26px;
+}
+.navin .void {
+  font-size: 25px;
+  line-height: 1;
+}
+.navlinks {
+  display: flex;
+  gap: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.navlinks a {
+  transition: opacity 0.2s;
+  opacity: 0.85;
+}
+.navlinks a:hover {
+  opacity: 1;
+}
+.navcta {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: #070505;
+  background: var(--ink);
+  padding: 11px 20px;
+  border-radius: 99px;
+  border: 1px solid var(--ink);
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+/* monochrome hover: invert to outline instead of filling with orange */
+.navcta:hover {
+  background: transparent;
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+/* ── hero ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 40px 56px;
+  overflow: hidden;
+}
+.heroshader {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(105% 80% at 50% 42%, transparent 12%, rgba(5, 3, 3, 0.6) 55%, rgba(4, 3, 2, 0.92) 100%),
+    linear-gradient(180deg, rgba(5, 3, 3, 0.7) 0%, transparent 26%, transparent 52%, rgba(4, 3, 2, 0.98) 100%);
+}
+.herocontent {
+  position: relative;
+  z-index: 3;
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+}
+.herobig {
+  font-size: clamp(64px, 12.5vw, 184px);
+  mix-blend-mode: difference;
+  color: #fff;
+}
+.herobig .l2 {
+  display: block;
+  -webkit-text-stroke: 1.5px #fff;
+  color: transparent;
+}
+.herorow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin-top: 38px;
+  flex-wrap: wrap;
+}
+.herosub {
+  max-width: 440px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.scrollhint {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+section {
+  position: relative;
+  z-index: 3;
+}
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ── selected work · per-project shader backgrounds ── */
+.work {
+  padding: 120px 0 110px;
+  position: relative;
+}
+.workhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.workhead h2 {
+  font-size: clamp(40px, 6vw, 84px);
+}
+.workhead p {
+  color: var(--ink-dim);
+  font-size: 15px;
+  max-width: 300px;
+  line-height: 1.5;
+}
+/* stage no longer clips — shaders (esp. the moon) bleed out of the box */
+.blendstage {
+  position: relative;
+  isolation: isolate;
+  margin-top: 64px;
+  border-top: 1px solid var(--line);
+}
+.stagefx {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+/* every project is a contained, soft-masked "celestial body": centered with
+   faded edges, so the shader stays a confined object on the global bg (no
+   full-stage colour wash) and spills past the box top/bottom instead of
+   clipping. Crossfades in on hover. */
+.bodylayer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(560px, 62vw);
+  height: min(560px, 62vw);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  -webkit-mask: radial-gradient(circle at 50% 50%, #000 50%, transparent 74%);
+  mask: radial-gradient(circle at 50% 50%, #000 50%, transparent 74%);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.bodylayer.is-active {
+  opacity: 1;
+}
+/* soft center scrim for legibility — only while a project is active, and it
+   fades to transparent at the edges so the stage edges stay pure global bg */
+.stagescrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  background: radial-gradient(110% 90% at 50% 50%, rgba(4, 3, 2, 0.55) 0%, rgba(4, 3, 2, 0.28) 50%, transparent 100%);
+  transition: opacity 0.5s ease;
+}
+.stagescrim.is-on {
+  opacity: 1;
+}
+.workgrid {
+  position: relative;
+  z-index: 2;
+}
+.wrow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
+  padding: 34px 4px;
+  border-bottom: 1px solid var(--line);
+  transition: opacity 0.35s ease;
+}
+.wrow .name {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 112;
+  font-size: clamp(30px, 4.8vw, 62px);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1), color 0.35s ease,
+    -webkit-text-stroke 0.35s ease;
+}
+/* hover: slide + flip to outline-only (border, no fill) */
+.wrow:hover .name {
+  transform: translateX(18px);
+  color: transparent;
+  -webkit-text-stroke: 1.4px var(--ink);
+}
+/* dim the other rows when the grid is hovered */
+.workgrid:hover .wrow:not(:hover) {
+  opacity: 0.32;
+}
+.wrow .meta {
+  font-family: var(--body);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: right;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+/* ── the void between · interactive capabilities (reworked, no eyebrow) ── */
+.process {
+  padding: 132px 0 40px;
+  position: relative;
+  overflow: hidden;
+}
+/* giant ghost word of the active capability — the "something extra" */
+.ghostword {
+  position: absolute;
+  right: -2%;
+  top: 38%;
+  z-index: 0;
+  font-family: var(--disp);
+  font-weight: 900;
+  font-variation-settings: 'wdth' 125;
+  text-transform: uppercase;
+  font-size: clamp(120px, 26vw, 420px);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(241, 232, 225, 0.07);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
+.process .wrap {
+  position: relative;
+  z-index: 2;
+}
+.proc-head {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 108;
+  text-transform: uppercase;
+  font-size: clamp(34px, 5vw, 72px);
+  line-height: 0.94;
+  margin: 0 0 18px;
+  max-width: 14ch;
+}
+.proc-head em {
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1.4px var(--ink);
+}
+.proc-lead {
+  color: var(--ink-dim);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 52ch;
+  margin-bottom: 64px;
+}
+.caplist {
+  border-top: 1px solid var(--line);
+}
+.caprow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  text-align: left;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  border-left: 0;
+  border-right: 0;
+  cursor: pointer;
+  color: var(--ink);
+  transition: opacity 0.3s ease;
+}
+.caplist:hover .caprow:not(:hover) {
+  opacity: 0.34;
+}
+.cap-idx {
+  font-family: var(--body);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+  padding-top: 10px;
+}
+.cap-name {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 116;
+  text-transform: uppercase;
+  font-size: clamp(28px, 4.4vw, 58px);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.caprow:hover .cap-name,
+.caprow[aria-expanded='true'] .cap-name {
+  transform: translateX(14px);
+}
+.cap-desc {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  max-width: 60ch;
+  font-family: var(--body);
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.55;
+  color: var(--ink);
+  transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+.caprow[aria-expanded='true'] .cap-desc {
+  grid-template-rows: 1fr;
+  opacity: 0.9;
+}
+/* spacing lives inside the collapsing area so no layout prop is animated */
+.cap-desc > span {
+  overflow: hidden;
+}
+.caprow[aria-expanded='true'] .cap-desc > span {
+  padding-top: 16px;
+}
+
+/* ── footer ── */
+footer {
+  margin-top: 96px;
+  padding: 120px 0 50px;
+  border-top: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.footshader {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+footer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(105% 100% at 50% 45%, transparent 12%, rgba(5, 3, 3, 0.55) 58%, rgba(4, 3, 2, 0.9) 100%),
+    linear-gradient(180deg, var(--bg) 0%, transparent 34%, rgba(4, 3, 2, 0.86) 100%);
+}
+.footin {
+  position: relative;
+  z-index: 3;
+}
+.footin h2 {
+  font-size: clamp(48px, 9vw, 140px);
+  mix-blend-mode: difference;
+  color: #fff;
+  margin-bottom: 40px;
+}
+.footrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.bigmail {
+  font-family: var(--disp);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 110;
+  font-size: clamp(22px, 3vw, 34px);
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 6px;
+  transition: opacity 0.2s, letter-spacing 0.2s;
+}
+.bigmail:hover {
+  opacity: 0.75;
+  letter-spacing: 0.01em;
+}
+.footmeta {
+  display: flex;
+  gap: 54px;
+  font-size: 13.5px;
+  color: var(--ink-dim);
+  line-height: 1.7;
+}
+.footmeta b {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.footbottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 80px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  letter-spacing: 0.04em;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .hero { padding: 0 22px 40px; }
+  .wrap { padding: 0 22px; }
+  .navin { padding: 11px 12px 11px 20px; }
+  .navlinks { display: none; }
+  .wrow { grid-template-columns: 1fr; gap: 8px; }
+  .wrow .meta { text-align: left; }
 }
