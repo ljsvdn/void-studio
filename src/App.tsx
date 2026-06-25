@@ -17,9 +17,12 @@ export default function App() {
       <div className="grain" aria-hidden="true" />
       <div className="scan" aria-hidden="true" />
 
-      <Nav />
-      <main>
+      {/* header + hero share the first screen */}
+      <div className="firstview">
+        <Nav />
         <Hero />
+      </div>
+      <main>
         <Work />
         <Process />
       </main>

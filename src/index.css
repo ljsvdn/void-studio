@@ -73,6 +73,26 @@ a {
   letter-spacing: 0.015em;
 }
 
+/* ── reveals · JS-gated so content is visible without JS / reduced motion ── */
+.reveal-on [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  will-change: opacity, transform;
+}
+.reveal-on .rv-in [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s ease, transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 0.09s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ── film grain + scanline overlays ── */
 .grain {
   position: fixed;
@@ -107,47 +127,58 @@ a {
   .grain { animation: none; }
 }
 
-/* ── nav · plain bordered pill, serif logo ── */
-nav {
-  position: fixed;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+/* ── top bar · ruled grid masthead ── */
+.firstview {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+.topbar {
+  position: relative;
   z-index: 100;
-  width: min(1180px, calc(100% - 36px));
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
 }
-.navshell {
-  position: relative;
-  border-radius: 100px;
-  box-shadow: 0 14px 50px rgba(0, 0, 0, 0.55);
+.navgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.78fr);
+  grid-template-rows: auto auto;
 }
-.navin {
-  position: relative;
-  z-index: 2;
-  border-radius: 99px;
-  border: 1px solid var(--line);
-  background: rgba(9, 6, 5, 0.92);
-  backdrop-filter: blur(16px);
+.navlogo {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: flex;
+  align-items: center;
+  padding: 8px 32px 14px;
+  font-size: clamp(56px, 8.5vw, 124px);
+  line-height: 0.78;
+  color: var(--ink);
+  border-right: 1px solid var(--line);
+}
+.navtop {
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 14px 13px 26px;
-}
-.navin .void {
-  font-size: 25px;
-  line-height: 1;
+  gap: 20px;
+  padding: 0 26px;
+  min-height: 66px;
+  border-bottom: 1px solid var(--line);
 }
 .navlinks {
   display: flex;
-  gap: 30px;
-  font-size: 14px;
-  font-weight: 500;
+  gap: clamp(20px, 2.6vw, 46px);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--ink);
-  letter-spacing: 0.01em;
 }
 .navlinks a {
+  position: relative;
+  padding: 8px 0; /* ≥24px tap target (WCAG 2.5.8) */
+  opacity: 0.78;
   transition: opacity 0.2s;
-  opacity: 0.85;
 }
 .navlinks a:hover {
   opacity: 1;
@@ -155,26 +186,41 @@ nav {
 .navcta {
   font-family: var(--body);
   font-weight: 600;
-  font-size: 13.5px;
-  color: #070505;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bg);
   background: var(--ink);
-  padding: 11px 20px;
+  padding: 9px 17px;
   border-radius: 99px;
   border: 1px solid var(--ink);
-  transition: transform 0.2s, background 0.2s, color 0.2s;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
 }
-/* monochrome hover: invert to outline instead of filling with orange */
 .navcta:hover {
   background: transparent;
   color: var(--ink);
   transform: translateY(-1px);
 }
+.navmeta {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 15px 26px;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
 
 /* ── hero ── */
 .hero {
   position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -206,12 +252,11 @@ nav {
 }
 .herobig {
   font-size: clamp(64px, 12.5vw, 184px);
-  mix-blend-mode: difference;
-  color: #fff;
+  color: var(--ink);
 }
 .herobig .l2 {
   display: block;
-  -webkit-text-stroke: 1.5px #fff;
+  -webkit-text-stroke: 1.5px var(--ink);
   color: transparent;
 }
 .herorow {
@@ -361,27 +406,9 @@ section {
 
 /* ── the void between · interactive capabilities (reworked, no eyebrow) ── */
 .process {
-  padding: 132px 0 40px;
+  padding: 132px 0 56px;
   position: relative;
   overflow: hidden;
-}
-/* giant ghost word of the active capability — the "something extra" */
-.ghostword {
-  position: absolute;
-  right: -2%;
-  top: 38%;
-  z-index: 0;
-  font-family: var(--disp);
-  font-weight: 900;
-  font-variation-settings: 'wdth' 125;
-  text-transform: uppercase;
-  font-size: clamp(120px, 26vw, 420px);
-  line-height: 0.8;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(241, 232, 225, 0.07);
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  white-space: nowrap;
 }
 .process .wrap {
   position: relative;
@@ -396,84 +423,78 @@ section {
   line-height: 0.94;
   margin: 0 0 18px;
   max-width: 14ch;
+  text-wrap: balance;
 }
-.proc-head em {
-  font-style: normal;
+/* connective words ghosted; IDEA / INTERFACE stay filled (the poles) */
+.proc-head .ghost {
   color: transparent;
   -webkit-text-stroke: 1.4px var(--ink);
+  opacity: 0.85;
 }
 .proc-lead {
   color: var(--ink-dim);
   font-size: 16px;
   line-height: 1.6;
   max-width: 52ch;
-  margin-bottom: 64px;
+  margin-bottom: clamp(48px, 7vw, 96px);
 }
-.caplist {
-  border-top: 1px solid var(--line);
+
+/* ── the manifesto — beliefs that rise into frame ── */
+.manifesto {
+  max-width: 22ch;
 }
-.caprow {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: 24px;
-  align-items: baseline;
-  text-align: left;
-  padding: 26px 0;
-  border-bottom: 1px solid var(--line);
-  background: none;
-  border-left: 0;
-  border-right: 0;
-  cursor: pointer;
-  color: var(--ink);
-  transition: opacity 0.3s ease;
-}
-.caplist:hover .caprow:not(:hover) {
-  opacity: 0.34;
-}
-.cap-idx {
-  font-family: var(--body);
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  color: var(--ink-dim);
-  font-variant-numeric: tabular-nums;
-  padding-top: 10px;
-}
-.cap-name {
+.mf-line {
   font-family: var(--disp);
-  font-weight: 800;
-  font-variation-settings: 'wdth' 116;
-  text-transform: uppercase;
-  font-size: clamp(28px, 4.4vw, 58px);
-  line-height: 0.98;
-  letter-spacing: -0.01em;
-  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 100;
+  font-size: clamp(30px, 4.6vw, 58px);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  overflow: hidden; /* mask for the rising inner line */
 }
-.caprow:hover .cap-name,
-.caprow[aria-expanded='true'] .cap-name {
-  transform: translateX(14px);
+@media (min-width: 768px) {
+  /* let statements breathe to one line on desktop (longest may take two) */
+  .manifesto {
+    max-width: none;
+  }
 }
-.cap-desc {
-  display: grid;
-  grid-template-rows: 0fr;
+.mf-line + .mf-line {
+  margin-top: clamp(22px, 3.4vw, 44px);
+}
+.mf-inner {
+  display: block;
+  will-change: transform;
+}
+/* pivot word as the studio's voice — brand serif italic against the bold sans.
+   Instrument Serif ships a single (400) weight, so we lighten the *feel* with a
+   touch of size restraint and a hair of transparency rather than font-weight. */
+.mf-em {
+  font-family: var(--logo);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.04em;
+  letter-spacing: 0;
+  opacity: 0.92;
+}
+/* armed = JS will run the reveal; start hidden, then rise in when in view */
+.manifesto.armed .mf-inner {
+  transform: translateY(115%);
   opacity: 0;
-  max-width: 60ch;
-  font-family: var(--body);
-  font-size: clamp(15px, 1.5vw, 18px);
-  line-height: 1.55;
-  color: var(--ink);
-  transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
 }
-.caprow[aria-expanded='true'] .cap-desc {
-  grid-template-rows: 1fr;
-  opacity: 0.9;
+.manifesto.armed.is-in .mf-inner {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.7s ease;
+  transition-delay: calc(var(--i) * 0.11s);
 }
-/* spacing lives inside the collapsing area so no layout prop is animated */
-.cap-desc > span {
-  overflow: hidden;
-}
-.caprow[aria-expanded='true'] .cap-desc > span {
-  padding-top: 16px;
+
+@media (prefers-reduced-motion: reduce) {
+  .manifesto .mf-inner {
+    transform: none;
+    opacity: 1;
+  }
 }
 
 /* ── footer ── */
@@ -506,8 +527,7 @@ footer::after {
 }
 .footin h2 {
   font-size: clamp(48px, 9vw, 140px);
-  mix-blend-mode: difference;
-  color: #fff;
+  color: var(--ink);
   margin-bottom: 40px;
 }
 .footrow {
@@ -547,6 +567,16 @@ footer::after {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+.footmeta a {
+  display: block;
+  width: fit-content;
+  padding: 5px 0; /* ≥24px tap target (WCAG 2.5.8) */
+  color: var(--ink-dim);
+  transition: color 0.2s;
+}
+.footmeta a:hover {
+  color: var(--ink);
+}
 .footbottom {
   display: flex;
   justify-content: space-between;
@@ -561,11 +591,75 @@ footer::after {
   gap: 12px;
 }
 
-@media (max-width: 720px) {
-  .hero { padding: 0 22px 40px; }
-  .wrap { padding: 0 22px; }
-  .navin { padding: 11px 12px 11px 20px; }
-  .navlinks { display: none; }
-  .wrow { grid-template-columns: 1fr; gap: 8px; }
-  .wrow .meta { text-align: left; }
+/* ── responsive ── */
+@media (max-width: 767px) {
+  /* masthead → stacked */
+  .navgrid {
+    grid-template-columns: 1fr;
+  }
+  .navlogo {
+    grid-column: 1;
+    grid-row: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(54px, 17vw, 88px);
+    padding: 14px 20px 16px;
+  }
+  .navtop {
+    grid-column: 1;
+    grid-row: auto;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    min-height: 0;
+    padding: 8px 20px 12px;
+  }
+  .navlinks a {
+    padding: 11px 0; /* 44px thumb target on mobile */
+  }
+  .navcta {
+    padding: 12px 20px;
+  }
+  .navmeta {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 14px 20px;
+  }
+
+  /* hero + generic wrap padding */
+  .hero {
+    padding: 0 20px 36px;
+  }
+  .wrap {
+    padding: 0 20px;
+  }
+  .herorow {
+    gap: 20px;
+  }
+
+  /* work */
+  .blendstage {
+    margin-top: 36px;
+  }
+  .wrow {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 26px 2px;
+  }
+  .wrow .meta {
+    text-align: left;
+  }
+  /* push the project shader clear of the left-aligned names */
+  .bodylayer {
+    left: 78%;
+    width: min(440px, 84vw);
+    height: min(440px, 84vw);
+  }
+
+  /* footer */
+  .footmeta {
+    gap: 36px;
+  }
+  .footbottom {
+    margin-top: 48px;
+  }
 }

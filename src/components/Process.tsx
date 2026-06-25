@@ -1,50 +1,58 @@
-import { useState } from 'react';
+import type { CSSProperties } from 'react';
 import { process } from '../content';
+import { useInView } from '../hooks/useInView';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 /**
- * "The void between" — reworked from the generic process-spectrum. No eyebrow.
- * A large interactive capability list (mirrors the Work hover language) with a
- * giant outlined ghost-word of the active capability behind it as the extra.
+ * "Everything between idea and interface." — IDEA / INTERFACE filled as the two
+ * poles, the connective words ghosted. The body is a typographic manifesto: the
+ * studio's beliefs, each line rising into frame on a staggered mask reveal when
+ * the section scrolls in. Reduced-motion / no-observer falls back to fully
+ * visible — content is never gated on an animation that might not fire.
  */
 export default function Process() {
-  const caps = process.capabilities;
-  const [active, setActive] = useState(0);
+  const reduced = useReducedMotion();
+  const armed = !reduced && typeof IntersectionObserver !== 'undefined';
+  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.3 });
+  const shown = !armed || inView;
+  const head = useInView<HTMLDivElement>({ threshold: 0.2 });
 
   return (
     <section className="process" id="process">
-      <div className="ghostword" aria-hidden="true">
-        {caps[active].name}
-      </div>
-
-      <div className="wrap">
-        <h2 className="proc-head">
+      <div ref={head.ref} className={`wrap ${head.inView ? 'rv-in' : ''}`}>
+        <h2 className="proc-head" data-reveal style={{ '--i': 0 } as CSSProperties}>
           {process.headParts.map((part, i) =>
-            i % 2 === 1 ? <em key={i}>{part}</em> : <span key={i}>{part}</span>
+            i % 2 === 1 ? (
+              <span key={i}>{part}</span>
+            ) : (
+              <span key={i} className="ghost">
+                {part}
+              </span>
+            )
           )}
         </h2>
-        <p className="proc-lead">{process.lead}</p>
+        <p className="proc-lead" data-reveal style={{ '--i': 1 } as CSSProperties}>
+          {process.lead}
+        </p>
 
-        <div className="caplist" onMouseLeave={() => setActive(0)}>
-          {caps.map((c, i) => (
-            <button
-              key={c.name}
-              type="button"
-              className="caprow"
-              aria-expanded={active === i}
-              onMouseEnter={() => setActive(i)}
-              onFocus={() => setActive(i)}
-              onClick={() => setActive(i)}
-            >
-              <span className="cap-idx">
-                0{i + 1} / 0{caps.length}
+        <div
+          ref={ref}
+          className={`manifesto ${armed ? 'armed' : ''} ${shown ? 'is-in' : ''}`}
+        >
+          {process.manifesto.map((parts, i) => (
+            <p className="mf-line" key={i} style={{ '--i': i } as CSSProperties}>
+              <span className="mf-inner">
+                {parts.map((part, j) =>
+                  j % 2 === 1 ? (
+                    <em key={j} className="mf-em">
+                      {part}
+                    </em>
+                  ) : (
+                    <span key={j}>{part}</span>
+                  )
+                )}
               </span>
-              <span>
-                <span className="cap-name">{c.name}</span>
-                <span className="cap-desc">
-                  <span>{c.desc}</span>
-                </span>
-              </span>
-            </button>
+            </p>
           ))}
         </div>
       </div>

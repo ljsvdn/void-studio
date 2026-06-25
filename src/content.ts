@@ -11,9 +11,12 @@ export const studio = {
 export const nav = {
   links: [
     { label: 'Work', href: '#work' },
-    { label: 'Studio', href: '#process' },
     { label: 'Approach', href: '#process' },
     { label: 'Contact', href: '#contact' },
+  ],
+  meta: [
+    'A design & engineering studio for the edge of the web',
+    'Berlin / Remote — Est. 2026',
   ],
   cta: { label: 'Start a project →', href: '#contact' },
 } as const;
@@ -21,7 +24,7 @@ export const nav = {
 export const hero = {
   line1: 'We build',
   line2: 'the void',
-  sub: "Between idea and interface there's a gap. VØID closes it — brand systems, product UI, and the engineering to ship them with teeth.",
+  sub: 'Most studios stop at the comp. We close the gap — brand, product, and the engineering to ship it intact.',
   scroll: 'Scroll to enter ↓',
 } as const;
 
@@ -31,37 +34,33 @@ export const work = {
     'Recent partners and the products we shaped from nothing into something inevitable.',
 } as const;
 
-/** The reworked "void between" section — no eyebrow. */
+/**
+ * The "void between" section. Header reads IDEA / INTERFACE as the filled poles
+ * (odd indices), with the connective words ghosted (even indices). Body is a
+ * typographic manifesto — the studio's beliefs, ordered idea → interface.
+ */
 export const process = {
-  headParts: ['Everything between ', 'idea', ' and ', 'interface', '.'], // em words at odd indices
+  headParts: ['Everything between ', 'idea', ' and ', 'interface.'], // filled poles at odd indices
   lead:
-    'The void is the work nobody sees — the decisions between a blank file and a shipped interface. Here is what we do inside it.',
-  endpoints: { start: 'Idea', finish: 'Interface' },
-  capabilities: [
-    {
-      name: 'Brand',
-      desc: 'The logic before the look — naming, voice, and a system built to hold its shape at any scale.',
-    },
-    {
-      name: 'Product',
-      desc: 'Flows, edge cases, and empty states. The unglamorous detail that quietly earns a user’s trust.',
-    },
-    {
-      name: 'Engineering',
-      desc: 'We ship what we draw. Front-end, WebGL, and the performance budget to keep it honest.',
-    },
-    {
-      name: 'Motion',
-      desc: 'Weight, timing, and texture — the layer that turns a static comp into something that feels alive.',
-    },
+    'The void is the work nobody sees — the decisions between a blank file and a shipped interface. Here is what we believe inside it.',
+  // each line's pivot word (odd index) is set in the serif italic — the voice
+  manifesto: [
+    ['The logic comes ', 'before', ' the look.'],
+    ['The unglamorous detail ', 'earns', ' the trust.'],
+    ['We ship ', 'exactly', ' what we draw.'],
+    ['Motion is ', 'meaning', ', never decoration.'],
   ],
 } as const;
 
 export const footer = {
   heading: ['Let’s build', 'from nothing.'],
-  meta: [
-    { label: 'Studio', lines: ['Berlin / Remote', 'Mon–Fri'] },
-    { label: 'Social', lines: ['Instagram', 'LinkedIn', 'Are.na'] },
-  ],
+  studio: { label: 'Studio', lines: ['Berlin / Remote', 'Mon–Fri'] },
+  social: {
+    label: 'Social',
+    links: [
+      { label: 'Instagram', href: 'https://instagram.com/voidstudio' },
+      { label: 'X', href: 'https://x.com/voidstudio' },
+    ],
+  },
   bottom: { left: '© 2026 VØID Studio', right: 'Built in the gap.' },
 } as const;
