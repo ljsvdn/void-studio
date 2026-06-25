@@ -13,26 +13,31 @@ interface Props {
   config: ShaderConfig;
   className?: string;
   style?: CSSProperties;
+  /** Caller-driven pause (e.g. a project shader that isn't the active one). */
+  paused?: boolean;
 }
 
 /**
  * Renders the Paper-Design shader for a surface, fed by the live params from
  * the shader store (so the dev tuner updates it in real time).
  *
- * The shader is mounted only once its wrapper has a real (non-zero) size. Paper
- * measures its parent once on mount; if it mounts into a parent that is still
- * 0×0 (flex/font/layout not yet resolved), the canvas can stick at 0×0. Gating
- * on a measured size makes init deterministic.
+ * Two performance guards:
+ *  - Mounts the shader only once its wrapper has a real (non-zero) size, so
+ *    Paper never measures a 0×0 parent and sticks the canvas at 0×0.
+ *  - Drives `speed` to 0 whenever the shader is off-screen, paused, or the user
+ *    prefers reduced motion. Paper cancels its animation frame at speed 0, so
+ *    off-screen / inactive shaders cost nothing instead of looping forever.
  */
-export default function PaperShader({ config, className, style }: Props) {
+export default function PaperShader({ config, className, style, paused = false }: Props) {
   const params = useShaderParams(config.id);
   const reduced = useReducedMotion();
   const Component = COMPONENTS[config.component];
-  const live = reduced ? { ...params, speed: 0 } : params;
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const [sized, setSized] = useState(false);
+  const [visible, setVisible] = useState(true);
 
+  // Defer mount until the wrapper has a real size (fixes the 0×0 init race).
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -53,6 +58,21 @@ export default function PaperShader({ config, className, style }: Props) {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Track on-screen visibility (continuous), with a margin to pre-warm.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: '200px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const animate = visible && !paused && !reduced;
+  const live = { ...params, speed: animate ? params.speed : 0 };
 
   return (
     <div

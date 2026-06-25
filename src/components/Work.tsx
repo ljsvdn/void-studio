@@ -38,7 +38,7 @@ export default function Work() {
                 key={p.name}
                 className={`bodylayer ${active === i ? 'is-active' : ''}`}
               >
-                <PaperShader config={p.shader} />
+                <PaperShader config={p.shader} paused={active !== i} />
               </div>
             ))}
           </div>
