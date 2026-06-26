@@ -13,7 +13,7 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
 export default function Process() {
   const reduced = useReducedMotion();
   const armed = !reduced && typeof IntersectionObserver !== 'undefined';
-  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.3 });
+  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.15 });
   const shown = !armed || inView;
   const head = useInView<HTMLDivElement>({ threshold: 0.2 });
 

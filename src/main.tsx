@@ -7,6 +7,11 @@ import './index.css';
 // content stays visible — reveals are pure enhancement.
 document.documentElement.classList.add('reveal-on');
 
+// Always start at the top — prevents browser scroll-restoration from dropping
+// the user mid-page on refresh.
+history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 // NB: no StrictMode — its dev-only double mount/unmount races the Paper-Design
 // shaders' WebGL setup and can leave canvases sized 0x0.
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />);

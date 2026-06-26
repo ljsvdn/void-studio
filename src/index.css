@@ -93,13 +93,85 @@ a {
   }
 }
 
+/* Nav and hero animate in immediately on first paint — no IO needed.
+   The animation overrides the .reveal-on opacity:0 rule so text and
+   visuals appear together. */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+.reveal-on .herocontent [data-reveal],
+.reveal-on .navgrid [data-reveal] {
+  animation: reveal-up 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 0.09s + 0.05s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on .herocontent [data-reveal],
+  .reveal-on .navgrid [data-reveal] {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── skip-to-content — visually hidden until focused ── */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  z-index: 9999;
+  padding: 12px 20px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* ── custom cursor — pointer:fine devices only ── */
+.cursor-dot {
+  position: fixed;
+  top: -3px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  background: var(--ink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: exclusion;
+  will-change: transform;
+  transition: width 0.18s ease, height 0.18s ease, top 0.18s ease, left 0.18s ease, opacity 0.18s ease;
+}
+.cursor-dot.is-big {
+  width: 28px;
+  height: 28px;
+  top: -14px;
+  left: -14px;
+  opacity: 0.5;
+}
+.has-cursor,
+.has-cursor * {
+  cursor: none !important;
+}
+@media (pointer: coarse) {
+  .cursor-dot { display: none; }
+}
+
 /* ── film grain + scanline overlays ── */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 90;
   pointer-events: none;
-  opacity: 0.42;
+  opacity: 0.34;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grainshift 0.6s steps(2) infinite;
@@ -154,6 +226,10 @@ a {
   line-height: 0.78;
   color: var(--ink);
   border-right: 1px solid var(--line);
+  transition: opacity 0.2s;
+}
+.navlogo:hover {
+  opacity: 0.7;
 }
 .navtop {
   grid-column: 2;
@@ -180,8 +256,25 @@ a {
   opacity: 0.78;
   transition: opacity 0.2s;
 }
-.navlinks a:hover {
+.navlinks a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.navlinks a:hover,
+.navlinks a.is-active {
   opacity: 1;
+}
+.navlinks a:hover::after,
+.navlinks a.is-active::after {
+  transform: scaleX(1);
 }
 .navcta {
   font-family: var(--body);
@@ -200,7 +293,7 @@ a {
 .navcta:hover {
   background: transparent;
   color: var(--ink);
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.03);
 }
 .navmeta {
   grid-column: 2;
@@ -210,7 +303,7 @@ a {
   justify-content: center;
   gap: 5px;
   padding: 15px 26px;
-  font-size: 11.5px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   line-height: 1.4;
   text-transform: uppercase;
@@ -247,16 +340,16 @@ a {
   position: relative;
   z-index: 3;
   max-width: 1180px;
-  margin: 0 auto;
   width: 100%;
 }
 .herobig {
-  font-size: clamp(64px, 12.5vw, 184px);
+  font-size: clamp(64px, 10vw, 140px);
   color: var(--ink);
+  text-wrap: balance;
 }
 .herobig .l2 {
   display: block;
-  -webkit-text-stroke: 1.5px var(--ink);
+  -webkit-text-stroke: 2px var(--ink);
   color: transparent;
 }
 .herorow {
@@ -272,6 +365,7 @@ a {
   font-size: 17px;
   line-height: 1.5;
   color: var(--ink);
+  text-wrap: pretty;
 }
 .scrollhint {
   font-size: 12px;
@@ -282,6 +376,7 @@ a {
   align-items: center;
   gap: 10px;
   white-space: nowrap;
+  overflow: hidden;
 }
 
 section {
@@ -315,6 +410,7 @@ section {
   font-size: 15px;
   max-width: 300px;
   line-height: 1.5;
+  text-wrap: balance;
 }
 /* stage no longer clips — shaders (esp. the moon) bleed out of the box */
 .blendstage {
@@ -367,12 +463,24 @@ section {
 }
 .wrow {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 2.4rem 1fr auto;
   gap: 28px;
   align-items: center;
-  padding: 34px 4px;
+  padding: 34px 0;
   border-bottom: 1px solid var(--line);
   transition: opacity 0.35s ease;
+}
+.wnum {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-dim);
+  font-family: var(--body);
+  font-weight: 600;
+  opacity: 0.25;
+  transition: opacity 0.35s ease;
+}
+.wrow:hover .wnum {
+  opacity: 1;
 }
 .wrow .name {
   font-family: var(--disp);
@@ -387,9 +495,9 @@ section {
 }
 /* hover: slide + flip to outline-only (border, no fill) */
 .wrow:hover .name {
-  transform: translateX(18px);
+  transform: translateX(28px);
   color: transparent;
-  -webkit-text-stroke: 1.4px var(--ink);
+  -webkit-text-stroke: 1.5px var(--ink);
 }
 /* dim the other rows when the grid is hovered */
 .workgrid:hover .wrow:not(:hover) {
@@ -406,7 +514,7 @@ section {
 
 /* ── the void between · interactive capabilities (reworked, no eyebrow) ── */
 .process {
-  padding: 132px 0 56px;
+  padding: 140px 0 96px;
   position: relative;
   overflow: hidden;
 }
@@ -420,7 +528,7 @@ section {
   font-variation-settings: 'wdth' 108;
   text-transform: uppercase;
   font-size: clamp(34px, 5vw, 72px);
-  line-height: 0.94;
+  line-height: 1.0;
   margin: 0 0 18px;
   max-width: 14ch;
   text-wrap: balance;
@@ -449,14 +557,14 @@ section {
   font-variation-settings: 'wdth' 100;
   font-size: clamp(30px, 4.6vw, 58px);
   line-height: 1.04;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.022em;
   text-wrap: balance;
   overflow: hidden; /* mask for the rising inner line */
 }
 @media (min-width: 768px) {
   /* let statements breathe to one line on desktop (longest may take two) */
   .manifesto {
-    max-width: none;
+    max-width: 900px;
   }
 }
 .mf-line + .mf-line {
@@ -473,7 +581,7 @@ section {
   font-family: var(--logo);
   font-style: italic;
   font-weight: 400;
-  font-size: 1.04em;
+  font-size: 1.12em;
   letter-spacing: 0;
   opacity: 0.92;
 }
@@ -526,8 +634,10 @@ footer::after {
   z-index: 3;
 }
 .footin h2 {
-  font-size: clamp(48px, 9vw, 140px);
+  font-size: clamp(48px, 8vw, 110px);
   color: var(--ink);
+  padding: 0 40px;
+  max-width: 900px;
   margin-bottom: 40px;
 }
 .footrow {
@@ -536,12 +646,28 @@ footer::after {
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 30px;
+  padding: 0 40px;
 }
+.footbottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 80px;
+  padding: 24px 40px 0;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  letter-spacing: 0.04em;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footbottom > :first-child { flex: 1; }
+.footbottom > :last-child  { flex: 1; text-align: right; }
 .bigmail {
   font-family: var(--disp);
   font-weight: 700;
   font-variation-settings: 'wdth' 110;
-  font-size: clamp(22px, 3vw, 34px);
+  font-size: clamp(28px, 3.5vw, 48px);
   color: var(--ink);
   border-bottom: 2px solid var(--ink);
   padding-bottom: 6px;
@@ -567,7 +693,8 @@ footer::after {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.footmeta a {
+.footmeta a,
+.footmeta span {
   display: block;
   width: fit-content;
   padding: 5px 0; /* ≥24px tap target (WCAG 2.5.8) */
@@ -577,18 +704,25 @@ footer::after {
 .footmeta a:hover {
   color: var(--ink);
 }
-.footbottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 80px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
-  font-size: 12.5px;
-  color: var(--ink-dim);
-  letter-spacing: 0.04em;
-  flex-wrap: wrap;
-  gap: 12px;
+
+/* ── tablet (769–1024px) ── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .navlogo {
+    font-size: clamp(48px, 7vw, 88px);
+    padding: 8px 24px 14px;
+  }
+  .hero {
+    padding: 0 32px 48px;
+  }
+  .wrap {
+    padding: 0 32px;
+  }
+  .work {
+    padding: 96px 0 88px;
+  }
+  .process {
+    padding: 112px 0 80px;
+  }
 }
 
 /* ── responsive ── */
@@ -641,12 +775,15 @@ footer::after {
     margin-top: 36px;
   }
   .wrow {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
     gap: 6px;
-    padding: 26px 2px;
+    padding: 26px 0;
+  }
+  .wnum {
+    display: none;
   }
   .wrow .meta {
-    text-align: left;
+    text-align: right;
   }
   /* push the project shader clear of the left-aligned names */
   .bodylayer {
@@ -655,11 +792,27 @@ footer::after {
     height: min(440px, 84vw);
   }
 
+  /* manifesto — stagger alternating lines left/right */
+  .manifesto {
+    max-width: none;
+  }
+  .mf-line:nth-child(even) {
+    text-align: right;
+  }
+
   /* footer */
-  .footmeta {
-    gap: 36px;
+  .footin h2 {
+    padding: 0 20px;
+    margin-bottom: 28px;
+  }
+  .footrow {
+    padding: 0 20px;
   }
   .footbottom {
+    padding: 20px 20px 0;
     margin-top: 48px;
+  }
+  .footmeta {
+    gap: 36px;
   }
 }

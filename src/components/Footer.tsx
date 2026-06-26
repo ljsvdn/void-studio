@@ -9,12 +9,11 @@ export default function Footer() {
 
   return (
     <footer id="contact">
-      {/* Paper-Design GrainGradient (amber wave). Tunable via the dev panel. */}
       <div className="footshader" aria-hidden="true">
         <PaperShader config={footerShader} />
       </div>
 
-      <div ref={ref} className={`footin wrap ${inView ? 'rv-in' : ''}`}>
+      <div ref={ref} className={`footin ${inView ? 'rv-in' : ''}`}>
         <h2 className="disp" data-reveal style={{ '--i': 0 } as CSSProperties}>
           {footer.heading[0]}
           <br />
@@ -29,10 +28,7 @@ export default function Footer() {
             <div>
               <b>{footer.studio.label}</b>
               {footer.studio.lines.map((line, i) => (
-                <span key={i}>
-                  {line}
-                  {i < footer.studio.lines.length - 1 && <br />}
-                </span>
+                <span key={i}>{line}</span>
               ))}
             </div>
             <div>

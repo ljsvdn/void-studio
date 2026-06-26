@@ -1,18 +1,13 @@
 import type { CSSProperties } from 'react';
 import { nav, studio } from '../content';
-import { useInView } from '../hooks/useInView';
+import { useScrollSpy } from '../hooks/useScrollSpy';
 
-/**
- * Grid header — oversized serif wordmark in the left cell, a links/CTA row over
- * a studio-meta row in the right cell, ruled like a print masthead. In normal
- * flow at the top of the first view (not floating).
- */
 export default function Nav() {
-  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0 });
+  const active = useScrollSpy(['work', 'process', 'contact']);
 
   return (
     <header className="topbar">
-      <div ref={ref} className={`navgrid ${inView ? 'rv-in' : ''}`}>
+      <div className="navgrid">
         <a
           href="#top"
           className="navlogo void"
@@ -25,11 +20,20 @@ export default function Nav() {
 
         <div className="navtop" data-reveal style={{ '--i': 1 } as CSSProperties}>
           <nav className="navlinks" aria-label="Primary">
-            {nav.links.map((l) => (
-              <a key={l.label} href={l.href}>
-                {l.label}
-              </a>
-            ))}
+            {nav.links.map((l) => {
+              const id = l.href.replace('#', '');
+              const isActive = active === id;
+              return (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  className={isActive ? 'is-active' : ''}
+                  aria-current={isActive ? 'true' : undefined}
+                >
+                  {l.label}
+                </a>
+              );
+            })}
           </nav>
           <a href={nav.cta.href} className="navcta">
             {nav.cta.label}

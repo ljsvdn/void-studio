@@ -2,11 +2,8 @@ import type { CSSProperties } from 'react';
 import PaperShader from '../shaders/PaperShader';
 import { heroShader } from '../shaders/shaderConfigs';
 import { hero } from '../content';
-import { useInView } from '../hooks/useInView';
 
 export default function Hero() {
-  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0 });
-
   return (
     <section className="hero" id="top">
       {/* Paper-Design GrainGradient bg (amber ember). Tunable via the dev panel. */}
@@ -14,7 +11,7 @@ export default function Hero() {
         <PaperShader config={heroShader} />
       </div>
 
-      <div ref={ref} className={`herocontent ${inView ? 'rv-in' : ''}`}>
+      <div className="herocontent">
         <h1 className="herobig disp" data-reveal style={{ '--i': 0 } as CSSProperties}>
           {hero.line1}
           <span className="l2">{hero.line2}</span>
