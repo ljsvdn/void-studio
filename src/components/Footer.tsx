@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { useState } from 'react';
 import PaperShader from '../shaders/PaperShader';
 import { footerShader } from '../shaders/shaderConfigs';
 import { footer, studio } from '../content';
@@ -6,6 +7,29 @@ import { useInView } from '../hooks/useInView';
 
 export default function Footer() {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.2 });
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(studio.email);
+      } else {
+        const field = document.createElement('textarea');
+        field.value = studio.email;
+        field.setAttribute('readonly', '');
+        field.style.position = 'fixed';
+        field.style.left = '-9999px';
+        document.body.appendChild(field);
+        field.select();
+        document.execCommand('copy');
+        document.body.removeChild(field);
+      }
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      window.location.href = `mailto:${studio.email}`;
+    }
+  };
 
   return (
     <footer id="contact">
@@ -14,16 +38,33 @@ export default function Footer() {
       </div>
 
       <div ref={ref} className={`footin ${inView ? 'rv-in' : ''}`}>
-        <h2 className="disp" data-reveal style={{ '--i': 0 } as CSSProperties}>
-          {footer.heading[0]}
-          <br />
-          {footer.heading[1]}
+        <h2
+          className="disp"
+          data-reveal
+          aria-label={footer.heading.join(' ')}
+          style={{ '--i': 0 } as CSSProperties}
+        >
+          <span aria-hidden="true">
+            {footer.heading[0]}
+            <br />
+            {footer.heading[1]}
+          </span>
         </h2>
 
         <div className="footrow" data-reveal style={{ '--i': 1 } as CSSProperties}>
-          <a href={`mailto:${studio.email}`} className="bigmail">
-            {studio.email}
-          </a>
+          <div className="mailgroup">
+            <a href={`mailto:${studio.email}`} className="bigmail">
+              {studio.email}
+            </a>
+            <button
+              type="button"
+              className="copyemail"
+              onClick={copyEmail}
+              aria-label={`Copy ${studio.email}`}
+            >
+              {copied ? 'Copied' : 'Copy'}
+            </button>
+          </div>
           <div className="footmeta">
             <div>
               <b>{footer.studio.label}</b>

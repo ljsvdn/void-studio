@@ -12,9 +12,16 @@ export default function Hero() {
       </div>
 
       <div className="herocontent">
-        <h1 className="herobig disp" data-reveal style={{ '--i': 0 } as CSSProperties}>
-          {hero.line1}
-          <span className="l2">{hero.line2}</span>
+        <h1
+          className="herobig disp"
+          data-reveal
+          aria-label={`${hero.line1} ${hero.line2}`}
+          style={{ '--i': 0 } as CSSProperties}
+        >
+          <span aria-hidden="true">{hero.line1}</span>
+          <span className="l2" aria-hidden="true">
+            {hero.line2}
+          </span>
         </h1>
         <div className="herorow">
           <p className="herosub" data-reveal style={{ '--i': 1 } as CSSProperties}>
