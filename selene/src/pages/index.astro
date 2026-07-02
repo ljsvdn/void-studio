@@ -1,0 +1,171 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import Hero from '../components/Hero';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const proofItems = [
+  'Concentrated equity',
+  'Liquidity windows',
+  'Tax-aware planning',
+];
+
+const scenarios = [
+  {
+    label: 'Problem',
+    copy: 'A senior engineer has most household wealth in one public stock, with new RSUs arriving before the next trading window.',
+  },
+  {
+    label: 'Decision',
+    copy: 'Selene compares hold, sell, hedge, and donate paths against tax drag, required cash, and downside exposure.',
+  },
+  {
+    label: 'Outcome',
+    copy: 'The client leaves with a sequence: what to do now, what to wait on, and what changes the recommendation.',
+  },
+];
+
+const standards = [
+  'Every model shows its assumptions.',
+  'Urgency appears only when timing matters.',
+  'Advice is written like a briefing, not a dashboard.',
+  'The next move is always visible.',
+];
+---
+
+<BaseLayout
+  title="Selene - Private Wealth Intelligence"
+  description="Selene is a private wealth intelligence concept for concentrated equity, liquidity timing, and tax-aware decisions."
+>
+  <div class="site-shell">
+    <main id="main">
+      <Hero client:load />
+
+      <section class="proof-strip" aria-label="Selene focus areas">
+        {proofItems.map((item) => <span>{item}</span>)}
+      </section>
+
+      <section class="section" id="offerings" aria-labelledby="offerings-title">
+        <div class="section-inner split">
+          <div data-reveal>
+            <p class="eyebrow">Built for timing risk</p>
+            <h2 id="offerings-title">The problem is not wealth. It is sequence.</h2>
+          </div>
+          <div data-reveal>
+            <p class="lead">
+              Selene gives concentrated equity holders a clean order of action: what needs
+              attention now, what can wait, and which assumptions change the plan.
+            </p>
+            <div class="proof-grid">
+              <article class="proof-cell major">
+                <b>Concentration</b>
+                <strong>One position can own the plan.</strong>
+              </article>
+              <article class="proof-cell">
+                <b>Liquidity</b>
+                <strong>Windows close quietly.</strong>
+              </article>
+              <article class="proof-cell">
+                <b>Tax</b>
+                <strong>Timing changes the math.</strong>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section advisor-band" id="scenario" aria-labelledby="scenario-title">
+        <div class="section-inner">
+          <div class="split">
+            <div data-reveal>
+              <p class="eyebrow">Anonymized scenario</p>
+              <h2 id="scenario-title">Decisions get easier when the order is visible.</h2>
+            </div>
+            <p class="lead" data-reveal>
+              Each review turns a messy equity position into a dated sequence of choices, risks,
+              and thresholds.
+            </p>
+          </div>
+          <div class="scenario" data-reveal>
+            {scenarios.map((item) => (
+              <article class="scenario-row">
+                <span>{item.label}</span>
+                <p>{item.copy}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="standards" aria-labelledby="standards-title">
+        <div class="section-inner">
+          <div class="split">
+            <div data-reveal>
+              <p class="eyebrow">Standards</p>
+              <h2 id="standards-title">Clarity before decoration.</h2>
+            </div>
+            <p class="lead" data-reveal>
+              Selene should feel like a serious advisor with taste: calm, direct, and built around
+              the next decision.
+            </p>
+          </div>
+          <div class="standards" data-reveal>
+            {standards.map((standard, index) => (
+              <article class="standard">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <p>{standard}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="access" aria-labelledby="access-title">
+        <div class="section-inner">
+          <div class="cta-panel" data-reveal>
+            <div>
+              <p class="eyebrow">Access</p>
+              <h2 id="access-title">Bring the equity. Leave with the sequence.</h2>
+            </div>
+            <a class="button-primary" href="mailto:hello@void.studio?subject=Selene%20review">
+              Request review
+              <span>
+                <ArrowRight size={20} stroke-width={1.8} aria-hidden="true" />
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const boot = () => {
+      document.documentElement.classList.add('ready');
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+        document.querySelectorAll('[data-reveal]').forEach((node) => node.classList.add('is-visible'));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.16 }
+      );
+
+      document.querySelectorAll('[data-reveal]').forEach((node) => observer.observe(node));
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot, { once: true });
+    } else {
+      boot();
+    }
+  </script>
+</BaseLayout>
