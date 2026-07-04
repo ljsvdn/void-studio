@@ -24,9 +24,20 @@ export default function Hero() {
           </span>
         </h1>
         <div className="herorow">
-          <p className="herosub" data-reveal style={{ '--i': 1 } as CSSProperties}>
-            {hero.sub}
-          </p>
+          <div className="herocopy" data-reveal style={{ '--i': 1 } as CSSProperties}>
+            <p className="herosub">{hero.sub}</p>
+            <div className="heroactions" aria-label="Hero actions">
+              {hero.actions.map((action) => (
+                <a
+                  key={action.label}
+                  href={action.href}
+                  className={`heroaction ${action.variant === 'primary' ? 'is-primary' : ''}`}
+                >
+                  {action.label}
+                </a>
+              ))}
+            </div>
+          </div>
           <div className="scrollhint" data-reveal style={{ '--i': 2 } as CSSProperties}>
             {hero.scroll}
           </div>

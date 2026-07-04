@@ -5,27 +5,32 @@
 
 export const studio = {
   name: 'VØID',
-  email: 'hello@void.studio',
+  email: 'hello@pixelalchemy.studio',
 } as const;
 
 export const nav = {
   links: [
-    { label: 'Work', href: '#work' },
-    { label: 'Approach', href: '#process' },
+    { label: 'Sprint', href: '#work' },
+    { label: 'Process', href: '#process' },
     { label: 'Contact', href: '#contact' },
   ],
   meta: [
-    'A design & engineering studio for the edge of the web',
-    'Berlin / Remote — Est. 2026',
+    'Async homepage sprints for clearer offers',
+    'Remote / no sales calls',
   ],
-  cta: { label: 'Start a project →', href: '#contact' },
+  cta: { label: 'Send your page', href: '#contact' },
 } as const;
 
 export const hero = {
-  line1: 'We build',
-  line2: 'the void',
-  sub: 'Most studios stop at the comp. We close the gap — brand, product, and the engineering to ship it intact.',
-  scroll: 'Scroll to enter ↓',
+  line1: 'Clearer offers.',
+  line2: 'Sharper pages.',
+  sub:
+    'An async micro-studio for homepage and landing page sprints, built for consultants, agencies, and service businesses that sell through trust.',
+  actions: [
+    { label: 'Send your page', href: '#contact', variant: 'primary' },
+    { label: 'See the sprint', href: '#work', variant: 'secondary' },
+  ],
+  scroll: 'Sprint details below',
 } as const;
 
 export const work = {
@@ -37,13 +42,13 @@ export const work = {
 /**
  * The "void between" section. Header reads IDEA / INTERFACE as the filled poles
  * (odd indices), with the connective words ghosted (even indices). Body is a
- * typographic manifesto — the studio's beliefs, ordered idea → interface.
+ * typographic manifesto: the studio's beliefs, ordered idea to interface.
  */
 export const process = {
   headParts: ['Everything between ', 'idea', ' and ', 'interface.'], // filled poles at odd indices
   lead:
-    'The void is the work nobody sees — the decisions between a blank file and a shipped interface. Here is what we believe inside it.',
-  // each line's pivot word (odd index) is set in the serif italic — the voice
+    'The void is the work nobody sees: the decisions between a blank file and a shipped interface. Here is what we believe inside it.',
+  // each line's pivot word (odd index) is set in the serif italic: the voice
   manifesto: [
     ['The logic comes ', 'before', ' the look.'],
     ['The unglamorous detail ', 'earns', ' the trust.'],
@@ -53,8 +58,8 @@ export const process = {
 } as const;
 
 export const footer = {
-  heading: ['Let’s build', 'from nothing.'],
-  studio: { label: 'Studio', lines: ['Berlin / Remote', 'Mon–Fri'] },
+  heading: ['Let us build', 'from nothing.'],
+  studio: { label: 'Studio', lines: ['Remote', 'Mon-Fri'] },
   social: {
     label: 'Social',
     links: [

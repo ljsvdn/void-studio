@@ -141,24 +141,36 @@ button {
 /* ── custom cursor — pointer:fine devices only ── */
 .cursor-dot {
   position: fixed;
-  top: -3px;
-  left: -3px;
-  width: 6px;
-  height: 6px;
-  background: var(--ink);
+  top: -14px;
+  left: -14px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   mix-blend-mode: exclusion;
   will-change: transform;
-  transition: width 0.18s ease, height 0.18s ease, top 0.18s ease, left 0.18s ease, opacity 0.18s ease;
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+.cursor-dot::before {
+  content: '';
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  width: 6px;
+  height: 6px;
+  border-radius: inherit;
+  background: var(--ink);
+  transform: scale(1);
+  transition: transform 0.18s ease;
+  will-change: transform;
 }
 .cursor-dot.is-big {
-  width: 28px;
-  height: 28px;
-  top: -14px;
-  left: -14px;
   opacity: 0.5;
+}
+.cursor-dot.is-big::before {
+  transform: scale(4.66);
 }
 .has-cursor,
 .has-cursor * {
@@ -382,12 +394,59 @@ button {
   margin-top: 38px;
   flex-wrap: wrap;
 }
+.herocopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 560px;
+}
 .herosub {
-  max-width: 440px;
+  max-width: 540px;
   font-size: 17px;
   line-height: 1.5;
   color: var(--ink);
   text-wrap: pretty;
+}
+.heroactions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.heroaction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 11px 17px;
+  border: 1px solid rgba(241, 232, 225, 0.28);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(241, 232, 225, 0.04);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease,
+    transform 0.22s ease;
+}
+.heroaction:hover {
+  background: rgba(241, 232, 225, 0.11);
+  border-color: rgba(241, 232, 225, 0.48);
+  transform: translateY(-1px);
+}
+.heroaction:active {
+  transform: translateY(0) scale(0.98);
+}
+.heroaction.is-primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+.heroaction.is-primary:hover {
+  background: transparent;
+  color: var(--ink);
 }
 .scrollhint {
   font-size: 12px;
@@ -841,20 +900,20 @@ footer::after {
   .navdrawer {
     grid-column: 1 / -1;
     grid-row: 2;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.2s ease;
     border-top: 1px solid transparent;
-    display: block;
   }
   .nav-open .navdrawer {
-    max-height: 300px;
+    grid-template-rows: 1fr;
     border-top-color: var(--line);
   }
   .navdrawer-inner {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
   .navtop {
@@ -890,6 +949,16 @@ footer::after {
   }
   .herorow {
     gap: 20px;
+  }
+  .herocopy {
+    gap: 20px;
+  }
+  .heroactions {
+    width: 100%;
+  }
+  .heroaction {
+    min-height: 44px;
+    padding: 12px 16px;
   }
 
   /* work */
