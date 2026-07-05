@@ -1,13 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { nav, studio } from '../content';
 import { useScrollSpy } from '../hooks/useScrollSpy';
 
 export default function Nav() {
-  const active = useScrollSpy(['work', 'process', 'contact']);
+  const active = useScrollSpy(['process', 'contact']);
   const [open, setOpen] = useState(false);
+  const [isMobileNav, setIsMobileNav] = useState(false);
 
   const close = () => setOpen(false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 767px)');
+    const sync = () => {
+      setIsMobileNav(query.matches);
+      if (!query.matches) setOpen(false);
+    };
+
+    sync();
+    query.addEventListener('change', sync);
+    return () => query.removeEventListener('change', sync);
+  }, []);
+
+  const drawerHidden = isMobileNav && !open;
+  const drawerA11y = drawerHidden
+    ? ({ 'aria-hidden': true, inert: '' } as Record<string, unknown>)
+    : {};
 
   return (
     <header className={`topbar${open ? ' nav-open' : ''}`}>
@@ -15,7 +33,7 @@ export default function Nav() {
         <a
           href="#top"
           className="navlogo void"
-          aria-label={`${studio.name} — home`}
+          aria-label={`${studio.name} home`}
           data-reveal
           style={{ '--i': 0 } as CSSProperties}
           onClick={close}
@@ -33,7 +51,7 @@ export default function Nav() {
           <span />
         </button>
 
-        <div className="navdrawer" aria-hidden={!open || undefined}>
+        <div className="navdrawer" {...drawerA11y}>
           <div className="navdrawer-inner">
             <div className="navtop" data-reveal style={{ '--i': 1 } as CSSProperties}>
               <nav className="navlinks" aria-label="Primary">
@@ -45,7 +63,7 @@ export default function Nav() {
                       key={l.label}
                       href={l.href}
                       className={isActive ? 'is-active' : ''}
-                      aria-current={isActive ? 'true' : undefined}
+                      aria-current={isActive ? 'location' : undefined}
                       onClick={close}
                     >
                       {l.label}

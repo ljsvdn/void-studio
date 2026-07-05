@@ -56,6 +56,9 @@ export default function Footer() {
             <a href={`mailto:${studio.email}`} className="bigmail">
               {studio.email}
             </a>
+            <span className="sr-only" aria-live="polite">
+              {copied ? 'Email address copied.' : ''}
+            </span>
             <button
               type="button"
               className="copyemail"

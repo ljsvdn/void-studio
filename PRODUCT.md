@@ -6,62 +6,45 @@ brand
 
 ## Users
 
-Founders, creative directors, and marketing leads at design-conscious brands who are
-evaluating a studio to hire for premium web, identity, and interactive/motion work. They
-arrive skeptical and fluent in good design — they've seen a hundred agency sites and can
-smell a template instantly. Their context: a short, high-intent visit, often from a referral
-or a portfolio link, deciding in under a minute whether VØID is "the real thing" and worth a
-conversation. The site is the studio's single most important proof of competence: it has to
-*demonstrate* craft, not claim it.
+Void is built for founders, consultants, small agencies, and premium service-business owners who already have a real offer but suspect their homepage or landing page is making that offer harder to buy. They are busy, skeptical, and allergic to generic freelancer positioning. They arrive from Upwork, a proposal, an audit, a referral, or a social teardown, usually with one question: "Can this person see what is wrong with my page and make it sharper without creating a drawn-out agency process?"
+
+They do not want a decorative portfolio tour. They need enough proof to trust the operator: a clear offer, a strong artifact, a concrete async process, and a sense that Void has taste without becoming impractical.
 
 ## Product Purpose
 
-VØID is a creative studio (web design, development, interactive/motion). This single-page site
-is the studio's portfolio and first impression. It exists to convert high-end prospective
-clients into inbound conversations by proving — through the artifact itself — that the studio
-operates at the edge of web, motion, and interface. Success = a visitor who came to judge
-leaves impressed enough to email `hello@void.studio`. The build doubles as the studio's
-flagship case study; the medium is the message.
+Void is an offer-first async micro-studio for homepage and landing page sprints. The site exists to convert cold or semi-warm prospects into async project conversations by making the offer immediately legible: sharper homepages, clearer offers, stronger trust, built without sales calls.
+
+Success means a visitor understands the sprint in under a minute, believes the site itself demonstrates craft, clicks into the proof project or process, and sends their current page for review. The page should feel like a premium studio artifact, but it must not hide the commercial offer behind mystery.
 
 ## Brand Personality
 
-Confident, restrained, expensive. First-person-plural studio voice — declarative, unhurried,
-no marketing filler. Three words: **deliberate, magnetic, exacting.** The interface should
-feel like a gallery at night: dark, quiet, with one luminous thing moving slowly at the
-center. Emotional goal: the visitor feels they're in the presence of taste and technical
-command, and wants in. Never loud, never salesy, never cute.
+Deliberate, magnetic, exacting.
+
+Void speaks with calm confidence: short, specific, unsentimental. It should feel like a dark gallery for a focused service, not a loud SaaS landing page and not a fake agency pretending to have ten years of case studies. The emotional goal is quiet authority: the prospect feels that Void will reduce noise, sharpen the first impression, and ship the cleaner version.
+
+The studio is async-first by design. "No sales calls" should feel like operational clarity, not avoidance.
 
 ## Anti-references
 
-- **Generic SaaS landing** — no feature grids, gradient blobs, hero-metric templates, rounded
-  card stacks, pastel gradients, "Sign up free" energy.
-- **Cream / warm-editorial trend** — no beige/sand/parchment body, no display-serif + italic +
-  mono-label magazine affectation. This stays dark oxblood; warmth comes from the palette's red,
-  not from a near-white tinted bg.
-- **Corporate Helvetica-min** — not sterile, safe Swiss blandness with no point of view. The
-  type must have presence (hence Archivo display over a neutral neo-grotesque).
-- Awwwards maximalism is *not* fully banned: technical ambition via the hero shader is welcome,
-  but no cursor-trail gimmickry, no scroll-hijacking, no kinetic overload. One standout beat.
+- Generic SaaS landing pages with feature grids, hero metrics, pastel gradients, bento cards, and "book a demo" energy.
+- Fake portfolio theater: invented case-study depth, inflated client lists, broad claims about brand/product/engineering without proof.
+- Cheap marketplace freelancer pages that compete on tools, hourly rates, and long service menus.
+- Vague premium-studio mystery where the visitor cannot tell what is sold, who it is for, or what happens next.
+- AI design slop: purple-blue gradients, glass cards, eyebrow labels above every section, generic rounded CTA stacks, and default font pairings that feel scraped from a template.
+- Overly salesy conversion copy. Void can sell the sprint without sounding like a funnel consultant.
 
 ## Design Principles
 
-1. **The artifact is the argument.** Don't describe the studio's skill; embody it. The shader,
-   the motion, and the typographic command must be the proof. If a section only *tells*, cut it.
-2. **One luminous thing, slowly.** Meditative restraint everywhere; a single standout moment
-   (the hero wordmark resolve + the living shader). Stillness makes the one motion expensive.
-3. **Discipline is the palette.** Near-black, oxblood, white. No other colors. Constraint reads
-   as confidence; every added hue would cheapen it.
-4. **Type carries the weight.** With no photography, hierarchy, scale, weight, and spacing do
-   all the structural work. Every type decision is load-bearing.
-5. **Trivially swappable content.** Real studio site — all copy and project data live in clearly
-   grouped constants (`content.ts`, `projects.ts`) so the owner edits data, never markup.
+1. **The offer is the anchor.** Every fold should make the async homepage sprint easier to understand, trust, or act on.
+2. **One proof artifact beats a fake archive.** Show one strong sprint-style proof project clearly instead of pretending to have a mature portfolio.
+3. **Premium, not cryptic.** Keep the dark gallery atmosphere, but never make buyers solve a riddle to learn what Void does.
+4. **Async is a feature.** Written diagnosis, fixed scope, and no-call delivery are part of the value proposition.
+5. **Type carries the argument.** Typography, spacing, and motion must prove taste before the copy claims it.
 
 ## Accessibility & Inclusion
 
-- WCAG 2.1 AA for all text/UI: body ≥ 4.5:1, large display ≥ 3:1 against its actual background
-  (verify white/muted-white over the darkest shader regions, not just over flat near-black).
-- `prefers-reduced-motion`: shader animation halts to a static oxblood gradient; all GSAP reveals
-  become instant opacity (content visible by default, never gated on a transition that won't fire).
-- Semantic landmarks (`header`/`nav`/`main`/`section`/`footer`), visible focus states on every
-  interactive element, `aria-label`s on icon-only links, smooth-scroll that respects reduced motion.
-- WebGL fallback: static oxblood CSS gradient if context creation fails or on low-power mobile.
+- Target WCAG 2.1 AA for text, controls, focus states, and keyboard navigation.
+- Respect `prefers-reduced-motion`; atmospheric motion must never gate content or cause discomfort.
+- Keep the primary action available without hover, video, or sales-call participation.
+- Preserve semantic landmarks and a clear heading hierarchy for screen-reader users.
+- Ensure mobile visitors can understand the offer and contact path without needing desktop hover states.

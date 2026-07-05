@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 /* ============================================================
-   VØID — Studio. Ported from the design system, with:
+   VOID - Studio. Ported from the design system, with:
    - orange accent (#c75a32) removed -> monochrome chrome; all
      color now comes from the shaders.
    - thicker nav foil border.
    - per-project shader backgrounds in Selected Work (moon no
-     longer clipped — it bleeds out of its box).
+     longer clipped - it bleeds out of its box).
    ============================================================ */
 
 :root {
@@ -18,7 +18,7 @@
      blend with no seam */
   --bg: #040302;
   --line: rgba(241, 232, 225, 0.13);
-  /* Monochrome accent — no orange. Color lives in the shaders. */
+  /* Monochrome accent - no orange. Color lives in the shaders. */
   --accent: #f1e8e1;
 
   --disp: 'Archivo', sans-serif;
@@ -76,7 +76,7 @@ button {
   letter-spacing: 0.015em;
 }
 
-/* ── reveals · JS-gated so content is visible without JS / reduced motion ── */
+/* -- reveals - JS-gated so content is visible without JS / reduced motion -- */
 .reveal-on [data-reveal] {
   opacity: 0;
   transform: translateY(22px);
@@ -96,7 +96,7 @@ button {
   }
 }
 
-/* Nav and hero animate in immediately on first paint — no IO needed.
+/* Nav and hero animate in immediately on first paint - no IO needed.
    The animation overrides the .reveal-on opacity:0 rule so text and
    visuals appear together. */
 @keyframes reveal-up {
@@ -117,7 +117,7 @@ button {
   }
 }
 
-/* ── skip-to-content — visually hidden until focused ── */
+/* -- skip-to-content - visually hidden until focused -- */
 .skip-link {
   position: fixed;
   top: -100%;
@@ -138,7 +138,7 @@ button {
   top: 0;
 }
 
-/* ── custom cursor — pointer:fine devices only ── */
+/* -- custom cursor - pointer:fine devices only -- */
 .cursor-dot {
   position: fixed;
   top: -14px;
@@ -188,8 +188,37 @@ button {
   position: relative;
   z-index: 1;
 }
+body::before,
+body::after {
+  content: '';
+}
 
-/* ── film grain + scanline overlays ── */
+.paper-shader.is-shader-pending::before {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.38;
+  background:
+    radial-gradient(circle at 58% 42%, color-mix(in srgb, var(--ink) 26%, transparent) 0%, transparent 31%),
+    radial-gradient(circle at 34% 64%, color-mix(in srgb, var(--ink-dim) 38%, transparent) 0%, transparent 42%);
+  transform: scale(1.03) rotate(0deg);
+  animation: shader-warmup 3.4s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes shader-warmup {
+  from { transform: scale(1.03) rotate(0deg); opacity: 0.26; }
+  to { transform: scale(1.12) rotate(7deg); opacity: 0.46; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-shader.is-shader-pending::before { animation: none; }
+}
+
+/* -- film grain + scanline overlays -- */
+body::before,
 .grain {
   position: fixed;
   inset: 0;
@@ -205,6 +234,7 @@ button {
   50% { transform: translate(-4px, 3px); }
   100% { transform: translate(3px, -2px); }
 }
+body::after,
 .scan {
   position: fixed;
   inset: 0;
@@ -220,10 +250,11 @@ button {
   );
 }
 @media (prefers-reduced-motion: reduce) {
+  body::before,
   .grain { animation: none; }
 }
 
-/* ── top bar · ruled grid masthead ── */
+/* -- top bar - ruled grid masthead -- */
 .firstview {
   display: flex;
   flex-direction: column;
@@ -274,7 +305,7 @@ button {
 }
 .navlinks a {
   position: relative;
-  padding: 8px 0; /* ≥24px tap target (WCAG 2.5.8) */
+  padding: 8px 0; /* >=24px tap target (WCAG 2.5.8) */
   opacity: 0.78;
   transition: opacity 0.2s;
 }
@@ -344,7 +375,7 @@ button {
   border-top: 1px solid var(--line);
 }
 
-/* ── hero ── */
+/* -- hero -- */
 .hero {
   position: relative;
   flex: 1 1 auto;
@@ -414,6 +445,13 @@ button {
   gap: 12px;
   flex-wrap: wrap;
 }
+.heronote {
+  max-width: 460px;
+  color: var(--ink-dim);
+  font-size: 13px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
 .heroaction {
   display: inline-flex;
   align-items: center;
@@ -470,7 +508,7 @@ section {
   padding: 0 40px;
 }
 
-/* ── selected work · per-project shader backgrounds ── */
+/* -- selected work - per-project shader backgrounds -- */
 .work {
   padding: 120px 0 110px;
   position: relative;
@@ -493,7 +531,7 @@ section {
   line-height: 1.5;
   text-wrap: balance;
 }
-/* stage no longer clips — shaders (esp. the moon) bleed out of the box */
+/* stage no longer clips - shaders (esp. the moon) bleed out of the box */
 .blendstage {
   position: relative;
   isolation: isolate;
@@ -525,7 +563,7 @@ section {
 .bodylayer.is-active {
   opacity: 1;
 }
-/* soft center scrim for legibility — only while a project is active, and it
+/* soft center scrim for legibility - only while a project is active, and it
    fades to transparent at the edges so the stage edges stay pure global bg */
 .stagescrim {
   position: absolute;
@@ -602,7 +640,7 @@ section {
   line-height: 1.4;
 }
 
-/* ── the void between · interactive capabilities (reworked, no eyebrow) ── */
+/* -- the void between - interactive capabilities (reworked, no eyebrow) -- */
 .process {
   padding: 140px 0 96px;
   position: relative;
@@ -637,7 +675,7 @@ section {
   margin-bottom: clamp(48px, 7vw, 96px);
 }
 
-/* ── the manifesto — beliefs that rise into frame ── */
+/* -- the manifesto - beliefs that rise into frame -- */
 .manifesto {
   max-width: 22ch;
 }
@@ -664,7 +702,7 @@ section {
   display: block;
   will-change: transform;
 }
-/* pivot word as the studio's voice — brand serif italic against the bold sans.
+/* pivot word as the studio's voice - brand serif italic against the bold sans.
    Instrument Serif ships a single (400) weight, so we lighten the *feel* with a
    touch of size restraint and a hair of transparency rather than font-weight. */
 .mf-em {
@@ -695,7 +733,7 @@ section {
   }
 }
 
-/* ── footer ── */
+/* -- footer -- */
 footer {
   margin-top: 96px;
   padding: 120px 0 50px;
@@ -814,7 +852,7 @@ footer::after {
 .footmeta span {
   display: block;
   width: fit-content;
-  padding: 5px 0; /* ≥24px tap target (WCAG 2.5.8) */
+  padding: 5px 0; /* >=24px tap target (WCAG 2.5.8) */
   color: var(--ink-dim);
   transition: color 0.2s;
 }
@@ -825,7 +863,7 @@ footer::after {
   color: var(--ink);
 }
 
-/* ── tablet (769–1024px) ── */
+/* -- tablet (769-1024px) -- */
 @media (min-width: 769px) and (max-width: 1024px) {
   .navlogo {
     font-size: clamp(48px, 7vw, 88px);
@@ -845,12 +883,12 @@ footer::after {
   }
 }
 
-/* ── hamburger button (hidden on desktop) ── */
+/* -- hamburger button (hidden on desktop) -- */
 .navburger {
   display: none;
 }
 
-/* ── responsive ── */
+/* -- responsive -- */
 @media (max-width: 767px) {
   /* logo + burger on one row; drawer collapses below */
   .navgrid {
@@ -896,7 +934,7 @@ footer::after {
     transform: translateY(-3.75px) rotate(-45deg);
   }
 
-  /* drawer collapse — max-height chosen tight to the content so the ease reads correctly */
+  /* drawer collapse - max-height chosen tight to the content so the ease reads correctly */
   .navdrawer {
     grid-column: 1 / -1;
     grid-row: 2;
@@ -988,7 +1026,7 @@ footer::after {
     transform: translateX(14px);
   }
 
-  /* manifesto — stagger alternating lines left/right */
+  /* manifesto - stagger alternating lines left/right */
   .manifesto {
     max-width: none;
   }
@@ -1015,3 +1053,6 @@ footer::after {
     gap: 36px;
   }
 }
+
+
+

@@ -6,9 +6,9 @@ import { hero } from '../content';
 export default function Hero() {
   return (
     <section className="hero" id="top">
-      {/* Paper-Design GrainGradient bg (amber ember). Tunable via the dev panel. */}
+      {/* Paper-Design GrainGradient bg (amber ember). */}
       <div className="heroshader" aria-hidden="true">
-        <PaperShader config={heroShader} />
+        <PaperShader config={heroShader} priority />
       </div>
 
       <div className="herocontent">
@@ -37,6 +37,7 @@ export default function Hero() {
                 </a>
               ))}
             </div>
+            <p className="heronote">{hero.note}</p>
           </div>
           <div className="scrollhint" data-reveal style={{ '--i': 2 } as CSSProperties}>
             {hero.scroll}

@@ -10,27 +10,27 @@ export const studio = {
 
 export const nav = {
   links: [
-    { label: 'Sprint', href: '#work' },
     { label: 'Process', href: '#process' },
     { label: 'Contact', href: '#contact' },
   ],
   meta: [
-    'Async homepage sprints for clearer offers',
-    'Remote / no sales calls',
+    'Async homepage diagnosis and rebuilds',
+    'Written scope / no sales calls',
   ],
-  cta: { label: 'Send your page', href: '#contact' },
+  cta: { label: 'Send a page', href: '#contact' },
 } as const;
 
 export const hero = {
   line1: 'Clearer offers.',
   line2: 'Sharper pages.',
   sub:
-    'An async micro-studio for homepage and landing page sprints, built for consultants, agencies, and service businesses that sell through trust.',
+    'Async homepage and landing page sprints for consultants, agencies, and service businesses that sell through trust.',
+  note: 'Send the current page. Get a written diagnosis and fixed-scope next step. No sales call required.',
   actions: [
-    { label: 'Send your page', href: '#contact', variant: 'primary' },
-    { label: 'See the sprint', href: '#work', variant: 'secondary' },
+    { label: 'Send a page', href: '#contact', variant: 'primary' },
+    { label: 'See process', href: '#process', variant: 'secondary' },
   ],
-  scroll: 'Sprint details below',
+  scroll: 'Process below',
 } as const;
 
 export const work = {
