@@ -1,5 +1,6 @@
 import Nav from './components/Nav';
 import Hero from './components/Hero';
+import Proof from './components/Proof';
 import Process from './components/Process';
 import Footer from './components/Footer';
 import Cursor from './components/Cursor';
@@ -16,6 +17,7 @@ export default function App() {
         <Hero />
       </div>
       <main>
+        <Proof />
         <Process />
       </main>
       <Footer />

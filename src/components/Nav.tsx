@@ -4,7 +4,7 @@ import { nav, studio } from '../content';
 import { useScrollSpy } from '../hooks/useScrollSpy';
 
 export default function Nav() {
-  const active = useScrollSpy(['process', 'contact']);
+  const active = useScrollSpy(['proof', 'process', 'contact']);
   const [open, setOpen] = useState(false);
   const [isMobileNav, setIsMobileNav] = useState(false);
 

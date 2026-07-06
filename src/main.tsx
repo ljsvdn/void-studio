@@ -10,9 +10,26 @@ document.documentElement.classList.add('reveal-on');
 // Always start at the top - prevents browser scroll-restoration from dropping
 // the user mid-page on refresh.
 history.scrollRestoration = 'manual';
-window.scrollTo(0, 0);
+if (!window.location.hash) {
+  window.scrollTo(0, 0);
+}
 
 // NB: no StrictMode - its dev-only double mount/unmount races the Paper-Design
 // shaders' WebGL setup and can leave canvases sized 0x0.
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />);
+
+if (window.location.hash) {
+  const scrollToHash = (attempt = 0) => {
+    const target = document.getElementById(window.location.hash.slice(1));
+    if (target) {
+      target.scrollIntoView();
+      return;
+    }
+    if (attempt < 20) {
+      window.setTimeout(() => scrollToHash(attempt + 1), 50);
+    }
+  };
+
+  requestAnimationFrame(() => scrollToHash());
+}
 

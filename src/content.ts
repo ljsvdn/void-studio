@@ -10,6 +10,7 @@ export const studio = {
 
 export const nav = {
   links: [
+    { label: 'Proof', href: '#proof' },
     { label: 'Process', href: '#process' },
     { label: 'Contact', href: '#contact' },
   ],
@@ -25,12 +26,57 @@ export const hero = {
   line2: 'Sharper pages.',
   sub:
     'Async homepage and landing page sprints for consultants, agencies, and service businesses that sell through trust.',
-  note: 'Send the current page. Get a written diagnosis and fixed-scope next step. No sales call required.',
+  note: 'Send the current page. Get a written diagnosis, scoped page fix, and price. No sales call required.',
   actions: [
     { label: 'Send a page', href: '#contact', variant: 'primary' },
-    { label: 'See process', href: '#process', variant: 'secondary' },
+    { label: 'See proof', href: '#proof', variant: 'secondary' },
   ],
-  scroll: 'Process below',
+  scroll: 'Proof below',
+} as const;
+
+export const proof = {
+  heading: ['Proof,', 'for now.'],
+  intro:
+    'No fake archive. No invented case studies. The site is stylized; the thinking is portable.',
+  standard: {
+    title: 'What this page proves',
+    copy:
+      'This page demonstrates the level of hierarchy, motion restraint, responsive polish, and implementation quality we bring to client pages.',
+    rows: [
+      {
+        label: 'Offer clarity',
+        text: 'The page says who it is for, what gets sharper, and what happens next.',
+      },
+      {
+        label: 'Async buying path',
+        text: 'The CTA asks for the current page, then returns a written diagnosis, scoped fix, and price.',
+      },
+      {
+        label: 'Visual trust',
+        text: 'The design has atmosphere without hiding the offer behind vague studio language.',
+      },
+    ],
+  },
+  thinking: {
+    title: 'The thinking',
+    label: 'Sample diagnosis, not client work.',
+    original: 'We help businesses grow online.',
+    rows: [
+      {
+        label: 'Problem',
+        text: 'No specific buyer, no concrete outcome, no reason to trust the page.',
+      },
+      {
+        label: 'Fix direction',
+        text: 'Name the buyer, name the painful problem, and make the next step feel lower-risk.',
+      },
+      {
+        label: 'Sharper line',
+        text: 'Homepage rebuilds for local service businesses getting traffic, but losing quote requests to vague copy and weak trust signals.',
+      },
+    ],
+  },
+  closing: 'The first real client sprint replaces this section when it earns the space.',
 } as const;
 
 export const work = {
@@ -39,21 +85,27 @@ export const work = {
     'Recent partners and the products we shaped from nothing into something inevitable.',
 } as const;
 
-/**
- * The "void between" section. Header reads IDEA / INTERFACE as the filled poles
- * (odd indices), with the connective words ghosted (even indices). Body is a
- * typographic manifesto: the studio's beliefs, ordered idea to interface.
- */
 export const process = {
-  headParts: ['Everything between ', 'idea', ' and ', 'interface.'], // filled poles at odd indices
+  headParts: ['The ', 'async', ' path.'],
   lead:
-    'The void is the work nobody sees: the decisions between a blank file and a shipped interface. Here is what we believe inside it.',
-  // each line's pivot word (odd index) is set in the serif italic: the voice
-  manifesto: [
-    ['The logic comes ', 'before', ' the look.'],
-    ['The unglamorous detail ', 'earns', ' the trust.'],
-    ['We ship ', 'exactly', ' what we draw.'],
-    ['Motion is ', 'meaning', ', never decoration.'],
+    'A no-call workflow for turning a current page into a clearer offer, cleaner structure, and fixed-scope rebuild.',
+  steps: [
+    {
+      title: 'Send',
+      text: 'Email the current homepage or landing page with one sentence about what it should sell.',
+    },
+    {
+      title: 'Diagnose',
+      text: 'We reply with what is unclear, what is costing trust, and what should change first.',
+    },
+    {
+      title: 'Scope',
+      text: 'You get the fixed page fix, timeline, and price before any rebuild work starts.',
+    },
+    {
+      title: 'Rebuild',
+      text: 'The page is designed and built async, with written updates instead of sales calls.',
+    },
   ],
 } as const;
 
