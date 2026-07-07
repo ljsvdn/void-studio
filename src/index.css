@@ -381,7 +381,7 @@ body::after,
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 0 40px 56px;
+  padding: 0 40px 42px;
   overflow: hidden;
 }
 .heroshader {
@@ -407,7 +407,8 @@ body::after,
   width: 100%;
 }
 .herobig {
-  font-size: clamp(64px, 10vw, 140px);
+  font-size: clamp(58px, 8.2vw, 128px);
+  line-height: 0.84;
   color: var(--ink);
   text-wrap: balance;
 }
@@ -421,16 +422,15 @@ body::after,
   justify-content: space-between;
   align-items: flex-end;
   gap: 40px;
-  margin-top: 38px;
+  margin-top: 26px;
   flex-wrap: wrap;
 }
 .herocopy {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
+  gap: 18px;
   max-width: 560px;
-  margin-left: clamp(48px, 6vw, 104px);
 }
 .herosub {
   max-width: 540px;
@@ -517,7 +517,6 @@ section {
 /* -- proof - craft standard + diagnostic thinking -- */
 .proof {
   padding: 128px 0 110px;
-  border-top: 1px solid var(--line);
   background: var(--bg);
 }
 .proofwrap {
@@ -527,7 +526,7 @@ section {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.64fr);
   gap: clamp(28px, 5vw, 84px);
-  align-items: end;
+  align-items: center;
   margin-bottom: clamp(48px, 7vw, 86px);
 }
 .proofhead h2 {
@@ -542,28 +541,30 @@ section {
   -webkit-text-stroke: 1.7px var(--ink);
 }
 .proofhead p {
-  color: var(--ink-dim);
-  font-size: 16px;
-  line-height: 1.65;
-  max-width: 48ch;
-  text-wrap: pretty;
+  color: rgba(241, 232, 225, 0.82);
+  font-family: var(--logo);
+  font-size: clamp(24px, 2.1vw, 34px);
+  line-height: 1.12;
+  max-width: 34ch;
+  text-wrap: balance;
 }
 .proofgrid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  border-top: 1px solid var(--line);
+  row-gap: clamp(54px, 7vw, 94px);
 }
 .proofpanel {
   display: grid;
-  grid-template-columns: minmax(440px, 0.44fr) minmax(0, 1fr);
-  gap: clamp(68px, 7.5vw, 132px);
-  padding: clamp(34px, 5vw, 62px) 0;
-  border-bottom: 1px solid var(--line);
+  grid-template-columns: minmax(360px, 0.36fr) minmax(0, 1fr);
+  gap: clamp(80px, 9vw, 156px);
+  align-items: start;
+  padding: 0;
 }
 .proofpanel-top {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  align-items: flex-start;
+  gap: 22px;
 }
 .proofpanel h3 {
   font-family: var(--disp);
@@ -576,14 +577,21 @@ section {
   color: var(--ink);
 }
 .proofpanel-top > p {
-  max-width: 35ch;
+  max-width: 38ch;
   color: var(--ink-dim);
   font-size: 15px;
   line-height: 1.6;
 }
+.proofsample {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 34ch);
+  margin-top: clamp(4px, 1vw, 12px);
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
 .proofsamplelabel {
   display: block;
-  margin: 0 0 14px;
   color: var(--ink-dim);
   font-size: 11px;
   font-weight: 650;
@@ -598,29 +606,29 @@ section {
   margin-top: 0;
 }
 .proofpanel blockquote {
-  max-width: 10.5ch;
-  color: transparent;
-  -webkit-text-stroke: 1.2px var(--ink);
-  font-family: var(--disp);
-  font-size: clamp(30px, 4.35vw, 58px);
-  font-weight: 800;
-  font-variation-settings: 'wdth' 108;
-  letter-spacing: -0.015em;
-  line-height: 0.98;
-  text-transform: uppercase;
+  max-width: 30ch;
+  color: rgba(241, 232, 225, 0.84);
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.45;
+  text-transform: none;
 }
 .proofrows {
   display: grid;
   align-content: start;
-  margin-top: clamp(18px, 3vw, 42px);
-  border-top: 1px solid var(--line);
+  margin-top: 0;
 }
 .proofrow {
   display: grid;
-  grid-template-columns: minmax(130px, 0.32fr) minmax(0, 1fr);
-  gap: clamp(18px, 3vw, 42px);
-  padding: 22px 0;
+  grid-template-columns: minmax(150px, 190px) minmax(0, 58ch);
+  gap: clamp(30px, 3.6vw, 56px);
+  align-items: start;
+  padding: clamp(21px, 2.6vw, 32px) 0;
   border-bottom: 1px solid var(--line);
+}
+.proofrow:first-child {
+  padding-top: 0;
 }
 .proofrow span {
   color: var(--ink);
@@ -628,38 +636,24 @@ section {
   font-weight: 650;
   letter-spacing: 0.1em;
   line-height: 1.35;
+  padding-top: 0.18em;
   text-transform: uppercase;
 }
 .proofrow p {
   color: var(--ink-dim);
-  font-size: 15px;
-  line-height: 1.6;
-  max-width: 62ch;
+  font-size: 15.5px;
+  line-height: 1.55;
+  max-width: 58ch;
   text-wrap: pretty;
 }
 .proofrow:last-child {
   border-bottom: none;
-}
-.proofrow.is-payoff {
-  padding-top: 24px;
 }
 .proofrow.is-payoff p {
   color: var(--ink);
   font-size: 15.5px;
   line-height: 1.6;
   max-width: 56ch;
-}
-.proofclosing {
-  margin-top: clamp(34px, 5vw, 58px);
-  margin-left: auto;
-  max-width: 43ch;
-  color: var(--ink);
-  font-family: var(--logo);
-  font-size: clamp(25px, 3vw, 42px);
-  font-style: italic;
-  line-height: 1.08;
-  opacity: 0.92;
-  text-wrap: balance;
 }
 
 /* -- selected work - per-project shader backgrounds -- */
@@ -799,7 +793,6 @@ section {
   padding: 132px 0 104px;
   position: relative;
   overflow: hidden;
-  border-top: 1px solid var(--line);
 }
 .process .wrap {
   position: relative;
@@ -809,7 +802,7 @@ section {
   display: grid;
   grid-template-columns: minmax(0, 0.58fr) minmax(320px, 0.42fr);
   gap: clamp(36px, 6vw, 96px);
-  align-items: end;
+  align-items: center;
   margin-bottom: clamp(50px, 7vw, 92px);
 }
 .proc-head {
@@ -829,24 +822,32 @@ section {
   opacity: 0.85;
 }
 .proc-lead {
-  color: var(--ink-dim);
-  font-size: 16px;
-  line-height: 1.65;
-  max-width: 46ch;
+  color: rgba(241, 232, 225, 0.82);
+  font-family: var(--logo);
+  font-size: clamp(24px, 2.1vw, 34px);
+  line-height: 1.12;
+  max-width: 34ch;
   margin: 0;
-  text-wrap: pretty;
+  text-wrap: balance;
 }
 .processsteps {
   display: grid;
-  border-top: 1px solid var(--line);
+  gap: 0;
 }
 .processstep {
   display: grid;
-  grid-template-columns: minmax(430px, 0.42fr) minmax(0, 1fr);
-  gap: clamp(56px, 7vw, 124px);
-  align-items: baseline;
-  padding: clamp(24px, 3.6vw, 42px) 0;
+  grid-template-columns: minmax(260px, 0.34fr) minmax(360px, 58ch);
+  justify-content: space-between;
+  gap: clamp(48px, 8vw, 160px);
+  align-items: start;
+  padding: clamp(26px, 3.4vw, 42px) 0;
   border-bottom: 1px solid var(--line);
+}
+.processstep:first-child {
+  padding-top: 0;
+}
+.processstep:last-child {
+  border-bottom: none;
 }
 .processstep h3 {
   font-family: var(--disp);
@@ -863,10 +864,12 @@ section {
   -webkit-text-stroke: 1.35px var(--ink);
 }
 .processstep p {
-  color: var(--ink-dim);
+  color: rgba(241, 232, 225, 0.64);
   font-size: 15.5px;
-  line-height: 1.65;
+  line-height: 1.6;
+  justify-self: end;
   max-width: 58ch;
+  padding-top: 0.3em;
   text-wrap: pretty;
 }
 
@@ -874,7 +877,6 @@ section {
 footer {
   margin-top: 96px;
   padding: 120px 0 50px;
-  border-top: 1px solid var(--line);
   position: relative;
   overflow: hidden;
 }
@@ -1193,8 +1195,9 @@ footer::after {
     font-size: clamp(30px, 11vw, 48px);
   }
   .proofpanel blockquote {
-    max-width: none;
-    font-size: clamp(30px, 11vw, 50px);
+    max-width: 30ch;
+    font-size: clamp(17px, 5.2vw, 21px);
+    line-height: 1.45;
   }
   .proofrow {
     grid-template-columns: 1fr;

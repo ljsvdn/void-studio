@@ -59,7 +59,9 @@ export const proof = {
   },
   thinking: {
     title: 'The thinking',
-    label: 'Sample diagnosis, not client work.',
+    label: 'Weak line, sample only.',
+    copy:
+      'A normal service page usually fails before the visuals: it does not name the buyer, the outcome, or the trust gap.',
     original: 'We help businesses grow online.',
     rows: [
       {
@@ -76,7 +78,6 @@ export const proof = {
       },
     ],
   },
-  closing: 'The first real client sprint replaces this section when it earns the space.',
 } as const;
 
 export const work = {
@@ -100,7 +101,7 @@ export const process = {
     },
     {
       title: 'Scope',
-      text: 'You get the fixed page fix, timeline, and price before any rebuild work starts.',
+      text: 'You get the fixed page scope, timeline, and price before any rebuild work starts.',
     },
     {
       title: 'Rebuild',

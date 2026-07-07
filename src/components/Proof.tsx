@@ -46,13 +46,14 @@ export default function Proof() {
             style={{ '--i': 2 } as CSSProperties}
           >
             <div className="proofpanel-top">
-              <div>
-                <h3>{proof.thinking.title}</h3>
+              <h3>{proof.thinking.title}</h3>
+              <p>{proof.thinking.copy}</p>
+              <div className="proofsample">
+                <span className="proofsamplelabel">{proof.thinking.label}</span>
+                <blockquote>{proof.thinking.original}</blockquote>
               </div>
-              <blockquote>{proof.thinking.original}</blockquote>
             </div>
-            <div className="proofevidence">
-              <span className="proofsamplelabel">{proof.thinking.label}</span>
+            <div className="proofevidence" aria-label="Sample diagnosis">
               <ProofRows rows={proof.thinking.rows} />
             </div>
           </article>
@@ -66,9 +67,6 @@ export default function Proof() {
           </article>
         </div>
 
-        <p className="proofclosing" data-reveal style={{ '--i': 4 } as CSSProperties}>
-          {proof.closing}
-        </p>
       </div>
     </section>
   );
