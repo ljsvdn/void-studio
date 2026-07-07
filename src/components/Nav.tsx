@@ -30,16 +30,20 @@ export default function Nav() {
   return (
     <header className={`topbar${open ? ' nav-open' : ''}`}>
       <div className="navgrid">
-        <a
-          href="#top"
-          className="navlogo void"
-          aria-label={`${studio.name} home`}
+        <div
+          className="navlogo"
           data-reveal
           style={{ '--i': 0 } as CSSProperties}
-          onClick={close}
         >
-          {studio.name}
-        </a>
+          <a
+            href="#top"
+            className="navlogo-mark void"
+            aria-label={`${studio.name} home`}
+            onClick={close}
+          >
+            {studio.name}
+          </a>
+        </div>
 
         <button
           className="navburger"

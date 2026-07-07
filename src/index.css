@@ -139,45 +139,63 @@ button {
 }
 
 /* -- custom cursor - pointer:fine devices only -- */
-.cursor-dot {
+.cursor {
   position: fixed;
-  top: -14px;
-  left: -14px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  inset: 0 auto auto 0;
   pointer-events: none;
   z-index: 9999;
-  mix-blend-mode: exclusion;
-  will-change: transform;
-  opacity: 1;
-  transition: opacity 0.18s ease;
+  color: var(--ink);
 }
-.cursor-dot::before {
-  content: '';
+.cursor-ring,
+.cursor-pin {
   position: absolute;
-  top: 11px;
-  left: 11px;
-  width: 6px;
-  height: 6px;
-  border-radius: inherit;
-  background: var(--ink);
-  transform: scale(1);
-  transition: transform 0.18s ease;
-  will-change: transform;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  will-change: transform, width, height, opacity;
 }
-.cursor-dot.is-big {
-  opacity: 0.5;
+.cursor-ring {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(241, 232, 225, 0.34);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(241, 232, 225, 0.045), transparent 62%);
+  box-shadow: 0 0 14px rgba(241, 232, 225, 0.05);
+  mix-blend-mode: exclusion;
+  opacity: 0.52;
+  transform: translate3d(calc(var(--cursor-ring-x, -100px) - 14px), calc(var(--cursor-ring-y, -100px) - 14px), 0);
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
 }
-.cursor-dot.is-big::before {
-  transform: scale(4.66);
+.cursor-pin {
+  width: 5px;
+  height: 5px;
+  background: rgba(241, 232, 225, 0.92);
+  box-shadow: 0 0 10px rgba(241, 232, 225, 0.22);
+  transform: translate3d(calc(var(--cursor-pin-x, -100px) - 2.5px), calc(var(--cursor-pin-y, -100px) - 2.5px), 0);
+  transition: opacity 0.16s ease, width 0.16s ease, height 0.16s ease;
+}
+.cursor.is-interactive .cursor-ring {
+  width: 42px;
+  height: 42px;
+  border-color: rgba(241, 232, 225, 0.68);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(241, 232, 225, 0.08), transparent 64%);
+  opacity: 0.74;
+  transform: translate3d(calc(var(--cursor-ring-x, -100px) - 21px), calc(var(--cursor-ring-y, -100px) - 21px), 0);
+}
+.cursor.is-interactive .cursor-pin {
+  opacity: 0.28;
 }
 .has-cursor,
 .has-cursor * {
   cursor: none !important;
 }
 @media (pointer: coarse) {
-  .cursor-dot { display: none; }
+  .cursor { display: none; }
 }
 
 .paper-shader {
@@ -281,9 +299,13 @@ body::after,
   line-height: 0.78;
   color: var(--ink);
   border-right: 1px solid var(--line);
+}
+.navlogo-mark {
+  display: inline-flex;
+  width: fit-content;
   transition: opacity 0.2s;
 }
-.navlogo:hover {
+.navlogo-mark:hover {
   opacity: 0.7;
 }
 .navtop {
@@ -346,6 +368,7 @@ body::after,
 .navcta:hover {
   background: transparent;
   color: var(--ink);
+  border-color: rgba(241, 232, 225, 0.74);
   transform: translateY(-1px) scale(1.03);
 }
 .navdrawer {
@@ -470,8 +493,8 @@ body::after,
     transform 0.22s ease;
 }
 .heroaction:hover {
-  background: rgba(241, 232, 225, 0.11);
-  border-color: rgba(241, 232, 225, 0.48);
+  background: rgba(241, 232, 225, 0.12);
+  border-color: rgba(241, 232, 225, 0.62);
   transform: translateY(-1px);
 }
 .heroaction:active {
@@ -485,6 +508,7 @@ body::after,
 .heroaction.is-primary:hover {
   background: transparent;
   color: var(--ink);
+  border-color: rgba(241, 232, 225, 0.78);
 }
 .scrollhint {
   font-size: 12px;
